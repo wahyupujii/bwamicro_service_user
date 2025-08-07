@@ -1,0 +1,40 @@
+services:
+  service_user:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    container_name: bwamicro_service_user
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+    depends_on:
+      - db_user 
+    networks:
+      - bwamicro
+
+  db_user:
+    image: mysql:8.4
+    container_name: bwamicro_db_user
+    ports:
+      - "3301:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bwamicro_user
+      MYSQL_USER: bwamicro_user
+      MYSQL_PASSWORD: bwamicro_user
+    volumes:
+      - bwamicro_volume_user:/var/lib/mysql
+    networks:
+      - bwamicro
+
+volumes:
+  bwamicro_volume_user:
+
+networks:
+  bwamicro:
+    external: true

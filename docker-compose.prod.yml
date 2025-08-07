@@ -1,0 +1,14 @@
+services:
+  service_user:
+    image: bwamicro_service_user:latest
+    container_name: bwamicro_service_user
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    networks:
+      - bwamicro
+
+networks:
+  bwamicro:
+    external: true
